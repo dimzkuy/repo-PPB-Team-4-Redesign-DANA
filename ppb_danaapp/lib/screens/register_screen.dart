@@ -59,41 +59,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   SizedBox(height: 20),
-                  Text(
-                    'or Create Account with',
-                    style: CustomTypography.bodyText1,
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 2.0),
-                          child: ButtonSystems.customSocialButton(
-                            label: 'Facebook',
-                            platform: 'facebook',
-                            onPressed: () {
-                              // Action untuk Facebook
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: ButtonSystems.customSocialButton(
-                            label: 'Google',
-                            platform: 'google',
-                            onPressed: () {
-                              // Action untuk Google
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).push(

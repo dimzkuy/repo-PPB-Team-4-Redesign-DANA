@@ -54,41 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Action untuk log in
                     },
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'or Log In with',
-                    style: CustomTypography.bodyText1,
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 2.0),
-                          child: ButtonSystems.customSocialButton(
-                            label: 'Facebook',
-                            platform: 'facebook',
-                            onPressed: () {
-                              // Action untuk Facebook
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: ButtonSystems.customSocialButton(
-                            label: 'Google',
-                            platform: 'google',
-                            onPressed: () {
-                              // Action untuk Google
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: 30),
                   TextButton(
                     onPressed: () {
