@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:async'; // Import untuk menggunakan Timer
+import 'dart:async';
 import '../design_system/styles/custom_palette_colors.dart';
 import '../design_system/styles/custom_typography.dart';
-import 'register_screen.dart'; // Import RegisterPage
+import 'register_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Menambahkan delay sebelum navigasi ke RegisterPage
     Future.delayed(Duration(seconds: 1), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => RegisterPage()),
@@ -19,38 +18,40 @@ class SplashScreen extends StatelessWidget {
         child: Container(
           width: 402,
           height: 874,
-          clipBehavior: Clip.antiAlias,
+          margin: EdgeInsets.all(8), // Margin 0,75 cm
           decoration: ShapeDecoration(
-            color: CustomPaletteColors.primary, // Warna latar belakang (biru)
+            color: CustomPaletteColors
+                .secondary, // Menggunakan warna biru muda dari design system
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: Stack(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Positioned(
-                left: 81,
-                top: 381,
-                child: Container(
-                  width: 239,
-                  height: 112,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          "assets/icon/icon_dana_splash_screen.png"), // Menggunakan gambar dari folder assets
-                      fit: BoxFit.fill,
+              Container(
+                margin: EdgeInsets.all(8), // Margin untuk isi
+                child: Column(
+                  children: [
+                    Container(
+                      width: 239,
+                      height: 112,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              "assets/icon/icon_dana_splash_screen.png"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 127,
-                top: 482,
-                child: Text(
-                  'GANTIDOMPET',
-                  style: CustomTypography.headline1.copyWith(
-                    color: CustomPaletteColors.background, // Warna teks (putih)
-                  ),
+                    SizedBox(height: 16),
+                    Text(
+                      'GANTIDOMPET',
+                      style: CustomTypography.headline1.copyWith(
+                        color: CustomPaletteColors.background,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

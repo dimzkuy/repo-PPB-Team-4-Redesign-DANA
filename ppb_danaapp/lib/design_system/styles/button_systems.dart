@@ -39,8 +39,7 @@ class ButtonSystems {
         icon = FontAwesomeIcons.google;
         break;
       default:
-        icon = FontAwesomeIcons
-            .question; // Default icon jika platform tidak diketahui
+        icon = FontAwesomeIcons.question;
     }
 
     return Container(
@@ -55,9 +54,7 @@ class ButtonSystems {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FaIcon(icon,
-                color:
-                    Colors.black), // Menggunakan FaIcon untuk menampilkan ikon
+            FaIcon(icon, color: Colors.black),
             SizedBox(width: 10),
             Text(
               label,
@@ -69,6 +66,23 @@ class ButtonSystems {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  static TextButton customTextButton({
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: CustomPaletteColors.secondary,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
