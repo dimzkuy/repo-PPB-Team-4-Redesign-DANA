@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'dart:async'; // Import untuk menggunakan Timer
 import '../design_system/styles/custom_palette_colors.dart';
 import '../design_system/styles/custom_typography.dart';
+import 'register_screen.dart'; // Import RegisterPage
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Menambahkan delay sebelum navigasi ke RegisterPage
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => RegisterPage()),
+      );
+    });
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -12,7 +21,7 @@ class SplashScreen extends StatelessWidget {
           height: 874,
           clipBehavior: Clip.antiAlias,
           decoration: ShapeDecoration(
-            color: CustomPaletteColors.accent, // Warna latar belakang (biru)
+            color: CustomPaletteColors.primary, // Warna latar belakang (biru)
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
@@ -27,7 +36,8 @@ class SplashScreen extends StatelessWidget {
                   height: 112,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage("https://via.placeholder.com/239x112"),
+                      image: AssetImage(
+                          "assets/icon/icon_dana_splash_screen.png"), // Menggunakan gambar dari folder assets
                       fit: BoxFit.fill,
                     ),
                   ),
