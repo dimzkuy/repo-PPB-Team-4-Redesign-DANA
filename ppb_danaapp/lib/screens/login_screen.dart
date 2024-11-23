@@ -9,137 +9,163 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: 402,
-          height: 874,
-          clipBehavior: Clip.antiAlias,
-          decoration: ShapeDecoration(
-            color: CustomPaletteColors.background,
-            shape: RoundedRectangleBorder(
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            width: 400,
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: CustomPaletteColors.background,
               borderRadius: BorderRadius.circular(30),
             ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 36,
-                top: 81,
-                child: Text(
-                  'Log In to Your Account',
-                  style: CustomTypography.headline1.copyWith(
-                    color: CustomPaletteColors.secondary,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 38,
-                top: 117,
-                child: Text(
-                  'Welcome! Please enter the required fields below',
-                  style: CustomTypography.bodyText1.copyWith(
-                    color: CustomPaletteColors.secondary,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 19,
-                top: 170,
-                child: _buildInputField('Email / Username'),
-              ),
-              Positioned(
-                left: 19,
-                top: 293,
-                child: _buildInputField('Password'),
-              ),
-              Positioned(
-                left: 156,
-                top: 414,
-                child: Text(
-                  'or Log In with',
-                  style: CustomTypography.bodyText1,
-                ),
-              ),
-              Positioned(
-                left: 20,
-                top: 590,
-                child: ButtonSystems.customElevatedButton(
-                  label: 'Log In Now',
-                  onPressed: () {
-                    // Action untuk log in
-                  },
-                ),
-              ),
-              Positioned(
-                left: 20,
-                top: 440,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ButtonSystems.customSocialButton(
-                      label: 'Facebook',
-                      platform: 'facebook',
-                      onPressed: () {
-                        // Action untuk login dengan Facebook
-                      },
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Log In to Your Account',
+                    style: CustomTypography.headline1.copyWith(
+                      color: CustomPaletteColors.secondary,
                     ),
-                    ButtonSystems.customSocialButton(
-                      label: 'Google',
-                      platform: 'google',
-                      onPressed: () {
-                        // Action untuk login dengan Google
-                      },
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Welcome! Please enter the required fields below',
+                    style: CustomTypography.bodyText1.copyWith(
+                      color: CustomPaletteColors.secondary,
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 68,
-                top: 691,
-                child: Text.rich(
-                  TextSpan(
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 30),
+                  _buildInputField(_emailController, 'Email / Username'),
+                  SizedBox(height: 15),
+                  _buildPasswordField(_passwordController, 'Password'),
+                  SizedBox(height: 30),
+                  ButtonSystems.customElevatedButton(
+                    label: 'Log In Now',
+                    onPressed: () {
+                      // Action untuk log in
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'or Log In with',
+                    style: CustomTypography.bodyText1,
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TextSpan(
-                        text: 'Don’t have an account? ',
-                        style: CustomTypography.bodyText1,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 2.0),
+                          child: ButtonSystems.customSocialButton(
+                            label: 'Facebook',
+                            platform: 'facebook',
+                            onPressed: () {
+                              // Action untuk Facebook
+                            },
+                          ),
+                        ),
                       ),
-                      TextSpan(
-                        text: 'Register here!',
-                        style: CustomTypography.bodyText1.copyWith(
-                          color: CustomPaletteColors.secondary,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 2.0),
+                          child: ButtonSystems.customSocialButton(
+                            label: 'Google',
+                            platform: 'google',
+                            onPressed: () {
+                              // Action untuk Google
+                            },
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
+                  SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () {
+                      // Aksi untuk navigasi ke register
+                    },
+                    child: Text(
+                      'Don’t have an account? Register here!',
+                      style: CustomTypography.bodyText1.copyWith(
+                        color: CustomPaletteColors.secondary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildInputField(String label) {
+  Widget _buildInputField(TextEditingController controller, String label) {
     return Container(
-      width: 365,
-      height: 77,
+      height: 50,
       decoration: BoxDecoration(
         color: CustomPaletteColors.inputFieldColor,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: Colors.black.withOpacity(0.25),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(fontSize: 16),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 18),
+          hintText: label,
+          hintStyle: TextStyle(
+            color: Colors.black.withOpacity(0.5),
             fontSize: 14,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField(TextEditingController controller, String label) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: CustomPaletteColors.inputFieldColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: !_isPasswordVisible,
+        style: TextStyle(fontSize: 16),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 18),
+          hintText: label,
+          hintStyle: TextStyle(
+            color: Colors.black.withOpacity(0.5),
+            fontSize: 14,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              color: Colors.black.withOpacity(0.5),
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
           ),
         ),
       ),
