@@ -7,5 +7,6 @@ class CustomPaletteColors {
   static const Color background = Color(0xFFFFFFFF); // White
   static const Color textPrimary = Color(0xFF000000); // Black
   static const Color textSecondary = Color(0xFF666666); // Grey
-  static const Color inputFieldColor = Color(0xFFD9D9D9); // Grey for input fields
+  static const Color inputFieldColor =
+      Color(0xFFD9D9D9); // Grey for input fields
 }

@@ -55,22 +55,41 @@ class _RegisterPageState extends State<RegisterPage> {
                   ButtonSystems.customElevatedButton(
                     label: 'Create Account',
                     onPressed: () {
-                      // Action untuk membuat akun
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
+                      // Navigasi ke Login Screen setelah membuat akun
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
-                    child: Text(
-                      'Already have an account? Login here!',
-                      style: CustomTypography.bodyText1.copyWith(
-                        color: CustomPaletteColors.secondary,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already have an account?',
+                        style: CustomTypography.bodyText1.copyWith(
+                          color: CustomPaletteColors.secondary,
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 8),
+                      TextButton(
+                        onPressed: () {
+                          // Navigasi ke Login Screen
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        },
+                        child: Text(
+                          'Login Here!',
+                          style: TextStyle(
+                            color: CustomPaletteColors.secondary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -40,4 +40,30 @@ class ButtonSystems {
       ),
     );
   }
+
+  // Variabel tombol untuk digunakan di home_screen
+  static ElevatedButton payNowButton(VoidCallback onPressed) {
+    return customElevatedButton(
+      label: 'Pay Now!',
+      onPressed: onPressed,
+      backgroundColor: CustomPaletteColors.primary,
+      foregroundColor: Colors.white,
+    );
+  }
+
+  static TextButton topUpButton(VoidCallback onPressed) {
+    return customTextButton(
+      label: '+ Top Up',
+      onPressed: onPressed,
+    );
+  }
+
+  static ElevatedButton showButton(VoidCallback onPressed) {
+    return customElevatedButton(
+      label: 'Show',
+      onPressed: onPressed,
+      backgroundColor: CustomPaletteColors.secondary,
+      foregroundColor: Colors.white,
+    );
+  }
 }

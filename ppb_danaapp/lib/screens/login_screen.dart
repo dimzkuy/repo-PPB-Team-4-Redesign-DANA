@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../design_system/styles/custom_palette_colors.dart';
 import '../design_system/styles/custom_typography.dart';
 import '../design_system/styles/button_systems.dart';
+import 'register_screen.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -51,13 +53,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ButtonSystems.customElevatedButton(
                     label: 'Log In Now',
                     onPressed: () {
-                      // Action untuk log in
+                      // Navigasi ke Home Screen setelah login
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
                     },
                   ),
                   SizedBox(height: 30),
                   TextButton(
                     onPressed: () {
-                      // Aksi untuk navigasi ke register
+                      // Navigasi ke Register Screen
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                      );
                     },
                     child: Text(
                       'Don’t have an account? Register here!',

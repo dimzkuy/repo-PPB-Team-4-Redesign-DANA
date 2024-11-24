@@ -18,10 +18,9 @@ class SplashScreen extends StatelessWidget {
         child: Container(
           width: 402,
           height: 874,
-          margin: EdgeInsets.all(8), // Margin 0,75 cm
+          margin: EdgeInsets.all(8),
           decoration: ShapeDecoration(
-            color: CustomPaletteColors
-                .secondary, // Menggunakan warna biru muda dari design system
+            color: CustomPaletteColors.secondary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
@@ -30,7 +29,7 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.all(8), // Margin untuk isi
+                margin: EdgeInsets.all(8),
                 child: Column(
                   children: [
                     Container(
@@ -38,8 +37,7 @@ class SplashScreen extends StatelessWidget {
                       height: 112,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(
-                              "assets/icon/icon_dana_splash_screen.png"),
+                          image: AssetImage("assets/icon/icon_dana_splash_screen.png"),
                           fit: BoxFit.fill,
                         ),
                       ),
