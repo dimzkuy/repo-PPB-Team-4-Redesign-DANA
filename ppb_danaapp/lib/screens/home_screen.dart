@@ -4,6 +4,7 @@ import '../design_system/styles/custom_palette_colors.dart';
 import '../design_system/styles/custom_typography.dart';
 import '../design_system/styles/button_systems.dart';
 import 'profile_screen.dart'; // Import ProfileScreen
+import 'history_screen.dart'; // Import HistoryScreen
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,14 +12,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isBalanceVisible = false; // State untuk menampilkan saldo
   int _selectedIndex = 0; // Index untuk BottomNavigationBar
 
-  void _toggleBalanceVisibility() {
-    setState(() {
-      _isBalanceVisible = !_isBalanceVisible; // Toggle visibility
-    });
-  }
+  // Daftar halaman yang akan ditampilkan
+  final List<Widget> _pages = [
+    HomeContent(), // Konten Beranda
+    HistoryScreen(), // Halaman Histori
+    ProfileScreen(), // Halaman Profil
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -31,14 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: CustomPaletteColors.background,
       body: SafeArea(
-        child: IndexedStack(
-          index: _selectedIndex,
-          children: [
-            _buildHomeContent(), // Konten Home
-            _buildAnotherPage(), // Placeholder untuk halaman History
-            ProfileScreen(), // Halaman Profile
-          ],
-        ),
+        child: _pages[_selectedIndex], // Tampilkan halaman yang dipilih
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -57,19 +51,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: CustomPaletteColors.secondary,
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );
   }
+}
 
-  Widget _buildHomeContent() {
+// Widget konten Beranda
+class HomeContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.white,
           floating: true,
           centerTitle: true,
-          leading: null, // Menghapus tombol panah kiri
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -89,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
-                // Balance Section
+                // Section Saldo
                 Card(
                   elevation: 4,
                   child: Container(
@@ -110,24 +108,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                _isBalanceVisible
-                                    ? 'Rp 1,000,000'
-                                    : 'Rp ***', // Tampilkan saldo atau ***
+                                'Rp 1,000,000',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                _isBalanceVisible
-                                    ? FontAwesomeIcons.eyeSlash
-                                    : FontAwesomeIcons.eye,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              onPressed: _toggleBalanceVisibility,
                             ),
                             IconButton(
                               icon: Icon(
@@ -158,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                // Action Buttons
+                // Tombol Aksi
                 Container(
                   padding: EdgeInsets.all(8),
                   child: GridView.count(
@@ -181,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                // Financial Records Section
+                // Section Rekaman Keuangan
                 Card(
                   elevation: 4,
                   child: Padding(
@@ -230,19 +216,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                // Bottom Spacer
-                SizedBox(height: 80), // Spacer for BottomNavigationBar
+                // Spacer untuk BottomNavigationBar
+                SizedBox(height: 80),
               ],
             ),
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildAnotherPage() {
-    return Center(
-      child: Text('Halaman Lain'),
     );
   }
 
