@@ -37,10 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            // ignore: deprecated_member_use
             icon: Icon(FontAwesomeIcons.home, size: 20),
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            // ignore: deprecated_member_use
             icon: Icon(FontAwesomeIcons.history, size: 20),
             label: 'History',
           ),
@@ -153,15 +155,19 @@ class HomeContent extends StatelessWidget {
                     crossAxisCount: 3,
                     childAspectRatio: 1.1,
                     children: [
+                      // ignore: deprecated_member_use
                       _buildActionButton(FontAwesomeIcons.tint, 'Water'),
                       _buildActionButton(
+                          // ignore: deprecated_member_use
                           FontAwesomeIcons.university, 'Send To Bank'),
                       _buildActionButton(
+                          // ignore: deprecated_member_use
                           FontAwesomeIcons.userFriends, 'Send to Contact'),
                       _buildActionButton(FontAwesomeIcons.lightbulb, 'Light'),
                       _buildActionButton(
                           FontAwesomeIcons.wallet, 'Cash Withdrawal'),
                       _buildActionButton(
+                          // ignore: deprecated_member_use
                           FontAwesomeIcons.mobileAlt, 'Credit & Data'),
                     ],
                   ),
