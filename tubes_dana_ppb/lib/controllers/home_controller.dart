@@ -10,5 +10,11 @@ class HomeController extends GetxController {
     Get.toNamed(RouteNames.history);
   }
 
-  // Tambahkan metode lainnya sesuai kebutuhan
+  void navigateToScan() {
+    Get.toNamed(RouteNames.camera); // Pastikan ini mengarah ke CameraScreen
+  }
+
+  void navigateToTransfer() {
+    // Implementasikan navigasi ke halaman transfer jika ada
+  }
 }

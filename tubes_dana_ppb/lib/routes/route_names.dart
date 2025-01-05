@@ -6,4 +6,7 @@ class RouteNames {
   static const String profile = '/profile';
   static const String settings = '/settings';
   static const String history = '/history';
+  static const String scan = '/scan'; // Halaman Scan
+  static const String camera = '/camera'; // Halaman Camera
+  static const String displayQR = '/display_qr'; // Halaman Display QR
 }
