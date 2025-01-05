@@ -50,7 +50,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBalanceCard() {
-    // Implementasi balance card sesuai kebutuhan
     return Card(
       elevation: 4,
       child: Padding(
@@ -59,7 +58,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Saldo Anda: Rp 1,000,000', // Contoh saldo
+              'Saldo Anda: Rp 1,000,000',
               style: GoogleFonts.poppins(
                   fontSize: 16, color: ColorThemes.textColor),
             ),
@@ -76,14 +75,15 @@ class HomeScreen extends StatelessWidget {
       crossAxisCount: 2,
       childAspectRatio: 1.1,
       children: [
-        _buildFeatureButton(FontAwesomeIcons.message, 'Transfer', () {
-          // Implementasi navigasi ke halaman transfer
+        _buildFeatureButton(FontAwesomeIcons.moneyBillTransfer, 'Transfer', () {
+          controller
+              .navigateToTransfer(); // Implementasi navigasi ke halaman transfer
         }),
-        _buildFeatureButton(FontAwesomeIcons.history, 'History', () {
+        _buildFeatureButton(FontAwesomeIcons.clockRotateLeft, 'History', () {
           controller.navigateToHistory();
         }),
         _buildFeatureButton(FontAwesomeIcons.qrcode, 'Scan', () {
-          // Implementasi proses pembayaran via QR Code
+          controller.navigateToScan(); // Navigasi ke CameraScreen
         }),
         _buildFeatureButton(FontAwesomeIcons.gear, 'Settings', () {
           Get.toNamed(RouteNames.settings);

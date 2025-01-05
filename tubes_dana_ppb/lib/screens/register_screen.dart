@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nanoid/async.dart';
 import 'package:tubes_dana_ppb/controllers/login_register_controller.dart';
 import '../themes/color_themes.dart';
 

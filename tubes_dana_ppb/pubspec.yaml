@@ -38,11 +38,19 @@ dependencies:
   google_fonts: ^6.2.1
   font_awesome_flutter: ^10.8.0
   icons_launcher: ^3.0.0
+<<<<<<< HEAD
+  image_picker: ^1.1.2
+  camera: ^0.11.0+2
+=======
   firebase_core: ^3.9.0
   firebase_auth: ^5.3.4
   email_validator: ^3.0.0
+<<<<<<< HEAD
   firebase_database: ^11.2.0
   nanoid: ^1.0.0
+=======
+>>>>>>> 8bbb8e754e79896dba8b24b9d82f5c9687304c5a
+>>>>>>> 916f48ed4621931237952fa783ef5df4621fd0c0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +77,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icon/
+<<<<<<< HEAD
+    - assets/images/
+=======
+>>>>>>> 8bbb8e754e79896dba8b24b9d82f5c9687304c5a
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
