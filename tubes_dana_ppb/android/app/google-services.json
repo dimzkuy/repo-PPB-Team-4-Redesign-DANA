@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549000507828",
+    "project_id": "tubes-dana-ppb",
+    "storage_bucket": "tubes-dana-ppb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549000507828:android:1e40b7132a72e847f742e1",
+        "android_client_info": {
+          "package_name": "com.example.tubes_dana_ppb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSxUdt6AQL4aoxDfCIoOa7wZ3R-Nmk77M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../routes/route_names.dart';
@@ -8,8 +9,16 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 2), () {
-      Get.offNamed(RouteNames.login);
+    Future.delayed(const Duration(seconds: 1), () async {
+      await FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user == null) {
+          // Kalau logout atau pertama kali daftar
+          Get.offNamed(RouteNames.login);
+        } else {
+          // Kalau sebelumnya sudah login
+          Get.offNamed(RouteNames.home);
+        }
+      });
     });
 
     return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tubes_dana_ppb/controllers/login_register_controller.dart';
@@ -9,13 +10,13 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorThemes.backgroundColor,
+      // backgroundColor: ColorThemes.backgroundColor,
       body: Center(
         child: Container(
           width: 400,
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            // color: Colors.white,
             borderRadius: BorderRadius.circular(30),
           ),
           child: SingleChildScrollView(
@@ -32,16 +33,27 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 const Text('Welcome! Please fill out the details below'),
                 const SizedBox(height: 30),
-                _buildInputField('Username'),
+                Obx(() =>
+                    _buildInputField('Email', controller.emailRegisterCtrl)),
                 const SizedBox(height: 15),
-                _buildInputField('Email'),
-                const SizedBox(height: 15),
-                _buildPasswordField('Password'),
+                Obx(() => _buildPasswordField(
+                    'Password', controller.pwdRegisterCtrl)),
                 const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed:
-                      controller.navigateToHome, // Menggunakan controller
-                  child: const Text('Create Account'),
+                  onPressed: () async {
+                    if (controller.registerCredValid()) {
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: controller.emailRegisterCtrl.text,
+                              password: controller.emailRegisterCtrl.text);
+
+                      controller.clearAfterRegister();
+                      controller.navigateToLogin();
+                    } else {
+                      controller.setErrorFlag(true);
+                    }
+                  }, // Menggunakan controller
+                  child: const Text('Create'),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: ColorThemes.primaryColor,
                       foregroundColor: ColorThemes.backgroundColor),
@@ -63,7 +75,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInputField(String label) {
+  Widget _buildInputField(String label, TextEditingController tec) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -71,7 +83,18 @@ class RegisterScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
+        onTap: () {
+          controller.setErrorFlag(false);
+        },
+        controller: tec,
         decoration: InputDecoration(
+          error: controller.errorFlaggedAfterSubmit.value
+              ? Text(
+                  "Email invalid!",
+                  style: TextStyle(
+                      color: ColorThemes.colorScheme.error, fontSize: 8.0),
+                )
+              : SizedBox.shrink(),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 18),
           hintText: label,
@@ -80,7 +103,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPasswordField(String label) {
+  Widget _buildPasswordField(String label, TextEditingController tec) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -88,8 +111,19 @@ class RegisterScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
+        onChanged: (value) {
+          controller.setErrorFlag(false);
+        },
+        controller: tec,
         obscureText: true,
         decoration: InputDecoration(
+          error: controller.errorFlaggedAfterSubmit.value
+              ? Text(
+                  "Password cannot be empty and must 8 characters!",
+                  style: TextStyle(
+                      color: ColorThemes.colorScheme.error, fontSize: 8.0),
+                )
+              : SizedBox.shrink(),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 18),
           hintText: label,
