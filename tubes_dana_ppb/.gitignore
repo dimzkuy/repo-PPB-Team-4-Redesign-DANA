@@ -1,0 +1,57 @@
+# Flutter & Dart
+*.dart_tool/
+*.packages
+*.flutter-plugins
+*.flutter-plugins-dependencies
+*.flutter-versions
+*.metadata
+
+# Android
+/android/.gradle/
+/android/.idea/
+/android/local.properties
+/android/app/*.keystore
+/android/app/build/
+/android/app/outputs/
+
+# iOS
+/ios/Flutter/.last_build_id
+/ios/Pods/
+/ios/Runner.xcworkspace/
+/ios/build/
+/ios/Flutter/Generated.xcconfig
+/ios/.symlinks/
+/ios/Flutter/ephemeral/
+
+# Web
+/web/.dart_tool/
+/web/.flutter-plugins
+/web/.flutter-plugins-dependencies
+/web/.flutter-versions
+/web/.metadata
+
+# macOS
+/macos/.flutter-plugins
+/macos/.flutter-plugins-dependencies
+/macos/.flutter-versions
+/macos/.metadata
+/macos/Flutter/ephemeral/
+build/macos
+
+# Windows
+/windows/.flutter-plugins
+/windows/.flutter-plugins-dependencies
+/windows/.flutter-versions
+/windows/.metadata
+/windows/Flutter/ephemeral/
+/windows/build/
+
+# Linux
+/linux/.flutter-plugins
+/linux/.flutter-plugins-dependencies
+/linux/.flutter-versions
+/linux/.metadata
+/linux/Flutter/ephemeral/
+/linux/build/
+
+build

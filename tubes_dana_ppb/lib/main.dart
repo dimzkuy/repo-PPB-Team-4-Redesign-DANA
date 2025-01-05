@@ -1,10 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tubes_dana_ppb/firebase_options.dart';
 import 'package:tubes_dana_ppb/routes/route_names.dart';
 import 'routes/app_routes.dart';
 import 'themes/color_themes.dart'; // Import ColorThemes
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
