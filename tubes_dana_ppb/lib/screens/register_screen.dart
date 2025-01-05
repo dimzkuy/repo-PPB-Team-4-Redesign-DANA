@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nanoid/async.dart';
 import 'package:tubes_dana_ppb/controllers/login_register_controller.dart';
 import '../themes/color_themes.dart';
 
 class RegisterScreen extends StatelessWidget {
   final LoginRegisterController controller = Get.put(LoginRegisterController());
+  final RTDBFirebase registNewUserController = Get.put(RTDBFirebase());
 
   @override
   Widget build(BuildContext context) {
@@ -34,23 +36,32 @@ class RegisterScreen extends StatelessWidget {
                 const Text('Welcome! Please fill out the details below'),
                 const SizedBox(height: 30),
                 Obx(() =>
-                    _buildInputField('Email', controller.emailRegisterCtrl)),
+                    _buildNameField('Name', controller.nameController)),
+                const SizedBox(height: 15),
+                Obx(() =>
+                    _buildInputField('Email', controller.emailController)),
                 const SizedBox(height: 15),
                 Obx(() => _buildPasswordField(
-                    'Password', controller.pwdRegisterCtrl)),
+                    'Password', controller.passwordController)),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () async {
-                    if (controller.registerCredValid()) {
+                    if (controller.isFormInputValid()) {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
-                              email: controller.emailRegisterCtrl.text,
-                              password: controller.emailRegisterCtrl.text);
+                              email: controller.emailController.text,
+                              password: controller.passwordController.text);
 
-                      controller.clearAfterRegister();
+                      registNewUserController.addNewUser(
+                          name: controller.nameController.text,
+                          email: controller.emailController.text,
+                          saldo: 75000,
+                          pin: "0000000");
+
+                      controller.clearAfterSubmit();
                       controller.navigateToLogin();
                     } else {
-                      controller.setErrorFlag(true);
+                      controller.updateErrorOccured(true);
                     }
                   }, // Menggunakan controller
                   child: const Text('Create'),
@@ -75,29 +86,52 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInputField(String label, TextEditingController tec) {
+  Widget _buildNameField(String label, TextEditingController tec) {
     return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: TextField(
         onTap: () {
-          controller.setErrorFlag(false);
+          controller.updateErrorOccured(false);
         },
         controller: tec,
         decoration: InputDecoration(
-          error: controller.errorFlaggedAfterSubmit.value
+          error: controller.hasErrorOccured.value
+              ? Text(
+                  "Name must be at least 5 characters long and not empty!",
+                  style: TextStyle(
+                      color: ColorThemes.colorScheme.error, fontSize: 10.0),
+                )
+              : null,
+          labelText: label,
+          filled: true,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField(String label, TextEditingController tec) {
+    return Container(
+      // height: 50,
+      // decoration: BoxDecoration(
+      //   color: Colors.grey[200],
+      //   borderRadius: BorderRadius.circular(20),
+      // ),
+      child: TextField(
+        onTap: () {
+          controller.updateErrorOccured(false);
+        },
+        controller: tec,
+        decoration: InputDecoration(
+          error: controller.hasErrorOccured.value
               ? Text(
                   "Email invalid!",
                   style: TextStyle(
-                      color: ColorThemes.colorScheme.error, fontSize: 8.0),
+                      color: ColorThemes.colorScheme.error, fontSize: 10.0),
                 )
-              : SizedBox.shrink(),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18),
-          hintText: label,
+              : null,
+          // border: InputBorder.none,
+          // contentPadding: EdgeInsets.symmetric(horizontal: 18),
+          labelText: label,
+          filled: true,
         ),
       ),
     );
@@ -105,28 +139,29 @@ class RegisterScreen extends StatelessWidget {
 
   Widget _buildPasswordField(String label, TextEditingController tec) {
     return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
+      // height: 50,
+      // decoration: BoxDecoration(
+      //   color: Colors.grey[200],
+      //   borderRadius: BorderRadius.circular(20),
+      // ),
       child: TextField(
-        onChanged: (value) {
-          controller.setErrorFlag(false);
+        onTap: () {
+          controller.updateErrorOccured(false);
         },
         controller: tec,
         obscureText: true,
         decoration: InputDecoration(
-          error: controller.errorFlaggedAfterSubmit.value
+          error: controller.hasErrorOccured.value
               ? Text(
                   "Password cannot be empty and must 8 characters!",
                   style: TextStyle(
-                      color: ColorThemes.colorScheme.error, fontSize: 8.0),
+                      color: ColorThemes.colorScheme.error, fontSize: 10.0),
                 )
-              : SizedBox.shrink(),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 18),
-          hintText: label,
+              : null,
+          // border: InputBorder.none,
+          // contentPadding: EdgeInsets.symmetric(horizontal: 18),
+          labelText: label,
+          filled: true,
         ),
       ),
     );

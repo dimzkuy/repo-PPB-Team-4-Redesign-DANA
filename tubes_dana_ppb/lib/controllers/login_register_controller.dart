@@ -1,40 +1,51 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nanoid/nanoid.dart';
 import '../routes/route_names.dart';
 
+class RTDBFirebase extends GetxController {
+  var dbUsersTable = FirebaseDatabase.instance.ref("users");
+  Future<void> addNewUser(
+      {required String name,
+      required String email,
+      required int saldo,
+      required String pin}) async {
+    final userData = {
+      "name": name,
+      "email": email,
+      "uniqueid": generateUniqueId(),
+      "saldo": 75000,
+      "pin": pin,
+    };
+    dbUsersTable.set(userData);
+  }
+
+  String generateUniqueId() {
+    return nanoid(16);
+  }
+}
+
 class LoginRegisterController extends GetxController {
-  // Login
-  var emailLoginCtrl = TextEditingController();
-  var pwdLoginCtrl = TextEditingController();
-  var errorFlaggedAfterSubmit = false.obs;
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var hasErrorOccured = false.obs;
 
-  void setErrorFlag(bool value) {
-    errorFlaggedAfterSubmit.value = value;
+  void updateErrorOccured(bool value) {
+    hasErrorOccured.value = value;
   }
 
-  void clearAfterLogin() {
-    emailLoginCtrl.text = "";
-    pwdLoginCtrl.text = "";
+  void clearAfterSubmit() {
+    emailController.text = "";
+    passwordController.text = "";
   }
 
-  bool loginCredValid() {
-    return (EmailValidator.validate(emailLoginCtrl.text) == true) &&
-        (pwdLoginCtrl.text.length >= 8);
-  }
-
-  // Register
-  var emailRegisterCtrl = TextEditingController();
-  var pwdRegisterCtrl = TextEditingController();
-
-  void clearAfterRegister() {
-    emailRegisterCtrl.text = "";
-    pwdRegisterCtrl.text = "";
-  }
-
-  bool registerCredValid() {
-    return (EmailValidator.validate(emailRegisterCtrl.text) == true) &&
-        (pwdRegisterCtrl.text.length >= 8);
+  bool isFormInputValid() {
+    return (EmailValidator.validate(emailController.text) == true) &&
+        (passwordController.text.length >= 8) &&
+        (nameController.text.length >= 5);
   }
 
   // Navigasi

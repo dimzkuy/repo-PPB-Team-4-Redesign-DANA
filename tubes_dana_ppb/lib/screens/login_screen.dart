@@ -38,12 +38,12 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20), // Jarak antara teks dan input
             Obx(
               () => TextField(
-                onChanged: (value) {
-                  controller.setErrorFlag(false);
+                onTap: () {
+                  controller.updateErrorOccured(false);
                 },
-                controller: controller.emailLoginCtrl,
+                controller: controller.emailController,
                 decoration: InputDecoration(
-                  error: controller.errorFlaggedAfterSubmit.value
+                  error: controller.hasErrorOccured.value
                       ? Text(
                           "Email invalid!",
                           style: TextStyle(
@@ -60,14 +60,14 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 16),
             Obx(
               () => TextField(
-                onChanged: (value) {
-                  controller.setErrorFlag(false);
+                onTap: () {
+                  controller.updateErrorOccured(false);
                 },
-                controller: controller.pwdLoginCtrl,
+                controller: controller.passwordController,
                 obscureText: true,
                 obscuringCharacter: '*',
                 decoration: InputDecoration(
-                  error: controller.errorFlaggedAfterSubmit.value
+                  error: controller.hasErrorOccured.value
                       ? Text(
                           "Password invalid!",
                           style: TextStyle(
@@ -84,16 +84,16 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
-                if (controller.loginCredValid()) {
+                if (controller.isFormInputValid()) {
                   CircularProgressIndicator();
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: controller.emailLoginCtrl.text,
-                      password: controller.pwdLoginCtrl.text);
+                      email: controller.emailController.text,
+                      password: controller.passwordController.text);
 
-                  controller.clearAfterLogin();
+                  controller.clearAfterSubmit();
                   controller.navigateToHome();
                 } else {
-                  controller.setErrorFlag(true);
+                  controller.updateErrorOccured(true);
                 }
               },
               style: ElevatedButton.styleFrom(
