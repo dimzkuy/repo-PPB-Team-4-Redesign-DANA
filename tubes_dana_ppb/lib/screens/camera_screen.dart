@@ -91,78 +91,71 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return CameraPreview(_controller);
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
+      body: Stack(children: [
+        FutureBuilder<void>(
+          future: _initializeControllerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return CameraPreview(_controller);
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomPaint(
+                size: const Size(250, 250),
+                painter: CornerSolidBorderPainter(),
+              ),
+              const SizedBox(height: 16),
+              Image.asset(
+                'assets/images/qris_logo.png', // Logo QRIS
+                width: 100,
+              ),
+            ],
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        if (_capturedImagePath != null) // Menampilkan gambar yang diambil
+          Positioned.fill(
+            child: Image.file(File(_capturedImagePath!),
+                fit: BoxFit.cover, color: Color.fromARGB(128, 0, 0, 0)),
+            // colorBlendMode: BlendMode.darken,
+          ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CustomPaint(
-                  size: const Size(250, 250),
-                  painter: CornerSolidBorderPainter(),
+                FloatingActionButton(
+                  heroTag: 'camera_button',
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  onPressed: _captureImage,
+                  child: const Icon(Icons.camera_alt, color: Colors.white),
                 ),
-                const SizedBox(height: 16),
-                Image.asset(
-                  'assets/images/qris_logo.png', // Logo QRIS
-                  width: 100,
+                FloatingActionButton(
+                  heroTag: 'gallery_button',
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  onPressed: _pickImageFromGallery,
+                  child: const Icon(Icons.photo_library, color: Colors.white),
                 ),
               ],
             ),
           ),
-          if (_capturedImagePath != null) // Menampilkan gambar yang diambil
-            Positioned.fill(
-              child: Image.file(
-                File(_capturedImagePath!),
-                fit: BoxFit.cover,
-                color: Colors.black.withValues(
-                  alpha: 0.5, // Menggunakan double untuk alpha
-                ),
-                colorBlendMode: BlendMode.darken,
-              ),
-            ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'camera_button',
-                    backgroundColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.white, width: 2),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    onPressed: _captureImage,
-                    child: const Icon(Icons.camera_alt, color: Colors.white),
-                  ),
-                  FloatingActionButton(
-                    heroTag: 'gallery_button',
-                    backgroundColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.white, width: 2),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    onPressed: _pickImageFromGallery,
-                    child: const Icon(Icons.photo_library, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }
