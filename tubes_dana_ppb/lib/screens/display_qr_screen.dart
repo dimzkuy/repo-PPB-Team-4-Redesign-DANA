@@ -32,7 +32,7 @@ class DisplayQRPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/$imageName', // Menggunakan Image.asset untuk mengambil dari folder assets
+              'assets/images/dummy_qr.png', // Menggunakan Image.asset untuk mengambil dari folder assets
               width: 300,
               height: 300,
             ),

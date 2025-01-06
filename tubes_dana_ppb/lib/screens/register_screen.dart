@@ -34,8 +34,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 const Text('Welcome! Please fill out the details below'),
                 const SizedBox(height: 30),
-                Obx(() =>
-                    _buildNameField('Name', controller.nameController)),
+                Obx(() => _buildNameField('Name', controller.nameController)),
                 const SizedBox(height: 15),
                 Obx(() =>
                     _buildInputField('Email', controller.emailController)),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tubes_dana_ppb/firebase_options.dart';
 import 'package:tubes_dana_ppb/routes/route_names.dart';
+import 'controllers/qr_controller.dart';
 import 'routes/app_routes.dart';
 import 'themes/color_themes.dart'; // Import ColorThemes
 
@@ -11,6 +12,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Daftarkan QRController
+  Get.put(QRController());
+
   runApp(const MyApp());
 }
 

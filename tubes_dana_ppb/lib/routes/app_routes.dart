@@ -17,8 +17,8 @@ class AppRoutes {
     GetPage(name: RouteNames.register, page: () => RegisterScreen()),
     GetPage(name: RouteNames.home, page: () => HomeScreen()),
     GetPage(name: RouteNames.profile, page: () => ProfileScreen()),
-    GetPage(name: RouteNames.settings, page: () => const SettingsScreen()),
-    GetPage(name: RouteNames.history, page: () => const HistoryScreen()),
+    GetPage(name: RouteNames.settings, page: () => SettingsScreen()),
+    GetPage(name: RouteNames.history, page: () => HistoryScreen()),
     GetPage(
         name: RouteNames.camera,
         page: () => const CameraScreen()), // Tambahkan ini

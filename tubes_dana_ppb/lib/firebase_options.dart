@@ -59,5 +59,4 @@ class DefaultFirebaseOptions {
     projectId: 'tubes-dana-ppb',
     storageBucket: 'tubes-dana-ppb.firebasestorage.app',
   );
-
 }

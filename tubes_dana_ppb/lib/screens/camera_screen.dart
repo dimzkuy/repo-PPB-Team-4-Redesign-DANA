@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
-import '../controllers/qr_controller.dart'; // Import the QRController
-import '../routes/route_names.dart'; // Import RouteNames
+import 'package:camera/camera.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:image_picker/image_picker.dart';
+import '../controllers/qr_controller.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -14,10 +14,12 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
+  late CameraController _cameraController;
   Future<void>? _initializeControllerFuture;
   final ImagePicker _picker = ImagePicker();
-  String? _capturedImagePath;
+  String? _capturedImagePath; // Untuk menyimpan path gambar yang diambil
+  String? _scannedQRCode; // Untuk menyimpan hasil QR code
+  bool _isProcessingQR = false; // Mencegah deteksi ganda
 
   @override
   void initState() {
@@ -27,41 +29,108 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
-    _controller = CameraController(
-      cameras.first,
-      ResolutionPreset.high,
-    );
-
-    _initializeControllerFuture = _controller.initialize();
-    setState(() {}); // Memanggil setState untuk memperbarui UI
+    if (cameras.isNotEmpty) {
+      _cameraController = CameraController(
+        cameras.first,
+        ResolutionPreset.high,
+      );
+      _initializeControllerFuture = _cameraController.initialize();
+      setState(() {});
+    } else {
+      Get.snackbar('Error', 'No cameras available.');
+    }
   }
 
+  /// Fungsi untuk menangkap gambar dari kamera
+  Future<void> _captureImage() async {
+    await _initializeControllerFuture;
+    final image = await _cameraController.takePicture();
+    setState(() {
+      _capturedImagePath = image.path; // Simpan path gambar kamera
+    });
+    _showCapturedImageDialog(); // Tampilkan dialog gambar
+  }
+
+  /// Fungsi untuk memilih gambar dari galeri
   Future<void> _pickImageFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _capturedImagePath = pickedFile.path;
+        _capturedImagePath = pickedFile.path; // Simpan path gambar galeri
       });
-      Get.find<QRController>()
-          .navigateToDisplayQR(pickedFile.name); // Menggunakan QRController
+      _showCapturedImageDialog(); // Tampilkan dialog gambar
     } else {
-      Get.snackbar('Error', 'No image selected.');
+      Get.snackbar('Error', 'No image selected.',
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
 
-  Future<void> _captureImage() async {
-    await _initializeControllerFuture;
-    final image = await _controller.takePicture();
+  /// Fungsi untuk menangani hasil QR code
+  void _handleQRCodeDetected(String qrCode) {
+    if (_isProcessingQR || qrCode == _scannedQRCode) return;
+
     setState(() {
-      _capturedImagePath = image.path;
+      _isProcessingQR = true;
+      _scannedQRCode = qrCode;
     });
-    Get.find<QRController>()
-        .navigateToDisplayQR(image.name); // Menggunakan QRController
+
+    // Tampilkan dialog QR code
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('QR Code Detected'),
+          content: Text('Data: $qrCode'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Tutup dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Reset setelah beberapa detik agar bisa scan ulang
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isProcessingQR = false; // Reset proses QR
+        _scannedQRCode = null; // Reset data QR
+      });
+    });
+  }
+
+  /// Fungsi untuk menampilkan dialog gambar yang diambil
+  void _showCapturedImageDialog() {
+    if (_capturedImagePath != null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Captured Image'),
+            content: Image.file(
+              File(_capturedImagePath!), // Tampilkan gambar
+              fit: BoxFit.cover,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Tutup dialog
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _cameraController.dispose();
     super.dispose();
   }
 
@@ -76,15 +145,9 @@ class _CameraScreenState extends State<CameraScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              Get.toNamed(RouteNames.camera); // Navigasi ke CameraScreen
-            },
-            child: const Text('Scan QR', style: TextStyle(color: Colors.blue)),
-          ),
-          TextButton(
-            onPressed: () {
-              Get.toNamed(RouteNames.displayQR, arguments: {
-                'imageName': 'dummy_qr.png' // Pastikan nama file yang benar
-              });
+              // Navigasi ke halaman Display QR dengan dummy QR
+              Get.find<QRController>()
+                  .navigateToDisplayQR('assets/images/dummy_qr.png');
             },
             child: const Text('Tampilkan QR',
                 style: TextStyle(color: Colors.blue)),
@@ -93,15 +156,16 @@ class _CameraScreenState extends State<CameraScreen> {
       ),
       body: Stack(
         children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return CameraPreview(_controller);
-              } else {
-                return const Center(child: CircularProgressIndicator());
+          MobileScanner(
+            onDetect: (barcode) {
+              if (barcode.barcodes.isNotEmpty) {
+                final String? code = barcode.barcodes.first.rawValue;
+                if (code != null) {
+                  _handleQRCodeDetected(code);
+                }
               }
             },
+            fit: BoxFit.cover,
           ),
           Center(
             child: Column(
@@ -113,23 +177,12 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
                 const SizedBox(height: 16),
                 Image.asset(
-                  'assets/images/qris_logo.png', // Logo QRIS
+                  'assets/images/qris_logo.png',
                   width: 100,
                 ),
               ],
             ),
           ),
-          if (_capturedImagePath != null) // Menampilkan gambar yang diambil
-            Positioned.fill(
-              child: Image.file(
-                File(_capturedImagePath!),
-                fit: BoxFit.cover,
-                color: Colors.black.withValues(
-                  alpha: 0.5, // Menggunakan double untuk alpha
-                ),
-                colorBlendMode: BlendMode.darken,
-              ),
-            ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(

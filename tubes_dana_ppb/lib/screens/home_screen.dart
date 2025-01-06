@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../routes/route_names.dart';
 import '../controllers/home_controller.dart';
 import '../themes/color_themes.dart';
 
@@ -13,7 +12,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -76,17 +74,16 @@ class HomeScreen extends StatelessWidget {
       childAspectRatio: 1.1,
       children: [
         _buildFeatureButton(FontAwesomeIcons.moneyBillTransfer, 'Transfer', () {
-          controller
-              .navigateToTransfer(); // Implementasi navigasi ke halaman transfer
+          controller.navigateToTransfer();
         }),
         _buildFeatureButton(FontAwesomeIcons.clockRotateLeft, 'History', () {
           controller.navigateToHistory();
         }),
         _buildFeatureButton(FontAwesomeIcons.qrcode, 'Scan', () {
-          controller.navigateToScan(); // Navigasi ke CameraScreen
+          controller.navigateToScan();
         }),
         _buildFeatureButton(FontAwesomeIcons.gear, 'Settings', () {
-          Get.toNamed(RouteNames.settings);
+          controller.navigateToSettings(); // Navigasi ke Settings
         }),
       ],
     );

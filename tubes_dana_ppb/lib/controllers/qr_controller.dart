@@ -1,60 +1,37 @@
+// Tetap digunakan
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../routes/route_names.dart';
-import 'package:camera/camera.dart';
-import 'package:image_picker/image_picker.dart';
 
 class QRController extends GetxController {
-  void navigateToCamera() {
-    Get.toNamed(RouteNames.camera);
-  }
-
-  // Mengubah parameter menjadi imageName
+  /// Navigasi ke layar untuk menampilkan data QR
+  /// Menggunakan `imageName` sebagai argumen
   void navigateToDisplayQR(String imageName) {
     Get.toNamed(RouteNames.displayQR, arguments: {'imageName': imageName});
   }
-}
 
-class CameraHandler extends GetxController {
-  late CameraController cameraController;
-  Future<void>? initializeControllerFuture;
-  final ImagePicker _picker = ImagePicker();
+  /// Menangani QR code yang telah dipindai
+  /// Menampilkan AlertDialog dengan informasi QR code
+  void handleScannedQR(String qrCode, BuildContext context) {
+    debugPrint('Handled QR Code: $qrCode');
 
-  @override
-  void onInit() {
-    super.onInit();
-    _initializeCamera();
-  }
-
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    if (cameras.isNotEmpty) {
-      cameraController = CameraController(cameras.first, ResolutionPreset.high);
-      initializeControllerFuture = cameraController.initialize();
-    } else {
-      Get.snackbar('Error', 'No cameras available.');
-    }
-  }
-
-  Future<void> pickImageFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      Get.find<QRController>()
-          .navigateToDisplayQR(pickedFile.name); // Menggunakan QRController
-    } else {
-      Get.snackbar('Error', 'No image selected.');
-    }
-  }
-
-  Future<void> captureImage() async {
-    await initializeControllerFuture;
-    final image = await cameraController.takePicture();
-    Get.find<QRController>()
-        .navigateToDisplayQR(image.name); // Menggunakan QRController
-  }
-
-  @override
-  void onClose() {
-    cameraController.dispose();
-    super.onClose();
+    // Menampilkan dialog custom
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('QR Code Detected'),
+          content: Text('Data: $qrCode'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Menutup dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -90,6 +90,8 @@ class LoginScreen extends StatelessWidget {
                       email: controller.emailController.text,
                       password: controller.passwordController.text);
 
+                  (await FirebaseAuth.instance.currentUser!).reload();
+
                   controller.clearAfterSubmit();
                   controller.navigateToHome();
                 } else {

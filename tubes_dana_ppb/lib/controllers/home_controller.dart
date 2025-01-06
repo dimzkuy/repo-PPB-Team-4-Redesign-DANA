@@ -14,6 +14,10 @@ class HomeController extends GetxController {
     Get.toNamed(RouteNames.camera); // Pastikan ini mengarah ke CameraScreen
   }
 
+  void navigateToSettings() {
+    Get.toNamed(RouteNames.settings); // Menavigasi ke SettingsScreen
+  }
+
   void navigateToTransfer() {
     // Implementasikan navigasi ke halaman transfer jika ada
   }

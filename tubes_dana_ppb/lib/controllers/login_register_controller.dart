@@ -44,8 +44,7 @@ class LoginRegisterController extends GetxController {
 
   bool isFormInputValid() {
     return (EmailValidator.validate(emailController.text) == true) &&
-        (passwordController.text.length >= 8) &&
-        (nameController.text.length >= 5);
+        (passwordController.text.length >= 8);
   }
 
   // Navigasi
